@@ -1,0 +1,239 @@
+<!DOCTYPE HTML>
+<html  lang="zh" xmlns:th="http://www.thymeleaf.org">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-bookCenter-add">
+			<div class="form-group">
+				<label class="col-sm-3 control-label">图书ID：</label>
+				<div class="col-sm-8">
+					<textarea type="text" id="bookIds" name="bookIds" class="form-control"></textarea>
+				</div>
+			</div>
+			<!--<div class="form-group">
+				<label class="col-sm-3 control-label">书名：</label>
+				<div class="col-sm-8">
+					<input id="bookName" name="bookName" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label">自定义书名：</label>
+				<div class="col-sm-8">
+					<input id="newBookName" name="newBookName" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">封面：</label>
+				<div class="col-sm-8">
+					<input id="imgUrl" name="imgUrl" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">作者：</label>
+				<div class="col-sm-8">
+					<input id="bookAuthor" name="bookAuthor" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">简介：</label>
+				<div class="col-sm-8">
+					<input id="introduction" name="introduction" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">字数：</label>
+				<div class="col-sm-8">
+					<input id="wordCount" name="wordCount" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">分类：</label>
+				<div class="col-sm-8">
+					<input id="categoryId" name="categoryId" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">二级分类：</label>
+				<div class="col-sm-8">
+					<input id="categorySec" name="categorySec" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">三级分类：</label>
+				<div class="col-sm-8">
+					<input id="categoryThr" name="categoryThr" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">关键词：</label>
+				<div class="col-sm-8">
+					<input id="keyWord" name="keyWord" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">ISBN：</label>
+				<div class="col-sm-8">
+					<input id="isbn" name="isbn" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">出版社：</label>
+				<div class="col-sm-8">
+					<input id="publish" name="publish" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">是否有卷：</label>
+				<div class="col-sm-8">
+					<label class="radio-box"> <input type="radio" name="haveVolume" value="1" /> 有 </label>
+					<label class="radio-box"> <input type="radio" name="haveVolume" value="0" /> 无 </label>
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">渠道编号：</label>
+				<div class="col-sm-8">
+					<input id="channel" name="channel" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">状态：</label>
+				<div class="col-sm-8">
+					<label class="radio-box"> <input type="radio" name="status" value="1" /> 在线 </label>
+					<label class="radio-box"> <input type="radio" name="status" value="0" /> 下线 </label>
+					<label class="radio-box"> <input type="radio" name="status" value="-1" /> 已下架 </label>
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">价格：</label>
+				<div class="col-sm-8">
+					<input id="bookPrice" name="bookPrice" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">创建时间：</label>
+				<div class="col-sm-8">
+					<input id="createDate" name="createDate" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">修改时间：</label>
+				<div class="col-sm-8">
+					<input id="updateDate" name="updateDate" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">版权到期时间：</label>
+				<div class="col-sm-8">
+					<input id="copyrightTime" name="copyrightTime" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">最后更新章节时间：</label>
+				<div class="col-sm-8">
+					<input id="lastUpdateChapterDate" name="lastUpdateChapterDate" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">最后更新章节名：</label>
+				<div class="col-sm-8">
+					<input id="lastUpdateChapterName" name="lastUpdateChapterName" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">最后更新章节ID：</label>
+				<div class="col-sm-8">
+					<input id="lastUpdateChapterId" name="lastUpdateChapterId" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">图书状态：</label>
+				<div class="col-sm-8">
+					<label class="radio-box"> <input type="radio" name="bookStatus" value="01" /> 连载 </label>
+					<label class="radio-box"> <input type="radio" name="bookStatus" value="02" /> 暂停 </label>
+					<label class="radio-box"> <input type="radio" name="bookStatus" value="03" /> 完本 </label>
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">其他信息：</label>
+				<div class="col-sm-8">
+					<input id="otherInfo" name="otherInfo" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">自定义图书ID：</label>
+				<div class="col-sm-8">
+					<input id="newBookId" name="newBookId" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">同步图书ID：</label>
+				<div class="col-sm-8">
+					<input id="syncBookId" name="syncBookId" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">备注：</label>
+				<div class="col-sm-8">
+					<input id="remark" name="remark" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label">短简介：</label>
+				<div class="col-sm-8">
+					<input id="shortIntroduction" name="shortIntroduction" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label">推荐语：</label>
+				<div class="col-sm-8">
+					<input id="recommended" name="recommended" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label">长简介：</label>
+				<div class="col-sm-8">
+					<input id="longIntroduction" name="longIntroduction" class="form-control" type="text">
+				</div>
+			</div>
+			-->
+		</form>
+	</div>
+    <div th:include="include::footer"></div>
+    <script type="text/javascript">
+		var prefix = ctx + "book/bookCenter"
+		$("#form-bookCenter-add").validate({
+			rules:{
+				bookIds:{
+					required:true,
+				},
+				/*bookName:{
+					required:true,
+				},
+				bookAuthor:{
+					required:true,
+				},
+				introduction:{
+					required:true,
+				},
+				wordCount:{
+					required:true,
+				},
+				status:{
+					required:true,
+				},
+				bookStatus:{
+					required:true,
+				}*/
+			},
+			focusCleanup: true
+		});
+		
+		function submitHandler() {
+	        if ($.validate.form()) {
+	            $.operate.save(prefix + "/add", $('#form-bookCenter-add').serialize());
+	        }
+	    }
+	</script>
+</body>
+</html>

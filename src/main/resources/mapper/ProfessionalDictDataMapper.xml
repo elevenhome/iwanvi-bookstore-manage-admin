@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.iwanvi.bookstore.admin.dao.ProfessionalDictDataMapper">
+    
+    <resultMap type="ProfessionalDictData" id="ProfessionalDictDataResult">
+        <result property="id"    column="id"    />
+        <result property="parentId"    column="parent_id"    />
+        <result property="bookListId"    column="book_list_id"    />
+        <result property="channel"    column="channel"    />
+        <result property="professional"    column="professional"    />
+        <result property="platform"    column="platform"    />
+        <result property="application"    column="application"    />
+        <result property="packageName"    column="package_name"    />
+        <result property="version"    column="version"    />
+        <result property="channelStatus"    column="channel_status"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+	
+	<sql id="selectProfessionalDictDataVo">
+        select id, parent_id, book_list_id, channel, professional, platform, application, package_name, version, channel_status, remark from professional_dict_data
+    </sql>
+
+    <select id="selectAll" resultMap="ProfessionalDictDataResult">
+        <include refid="selectProfessionalDictDataVo"/>
+    </select>
+	
+    <select id="selectProfessionalDictDataList" parameterType="ProfessionalDictData" resultMap="ProfessionalDictDataResult">
+        <include refid="selectProfessionalDictDataVo"/>
+        <where>  
+            <if test="id != null "> and id = #{id}</if>
+             <if test="parentId != null "> and parent_id = #{parentId}</if>
+             <if test="bookListId != null"> and book_list_id = #{bookListId}</if>
+             <if test="channel != null  and channel != '' "> and channel = #{channel}</if>
+             <if test="professional != null  and professional != '' "> and professional = #{professional}</if>
+             <if test="platform != null  and platform != '' "> and platform = #{platform}</if>
+             <if test="application != null  and application != '' "> and application = #{application}</if>
+             <if test="packageName != null  and packageName != '' "> and package_name = #{packageName}</if>
+             <if test="version != null  and version != '' "> and version = #{version}</if>
+             <if test="channelStatus != null "> and channel_status = #{channelStatus}</if>
+             <if test="remark != null  and remark != '' "> and remark = #{remark}</if>
+         </where>
+    </select>
+    
+    <select id="selectProfessionalDictDataById" parameterType="Integer" resultMap="ProfessionalDictDataResult">
+        <include refid="selectProfessionalDictDataVo"/>
+        where id = #{id}
+    </select>
+    <select id="selectProfessionalDictDataByBookListId" parameterType="Integer" resultMap="ProfessionalDictDataResult">
+        <include refid="selectProfessionalDictDataVo"/>
+        where book_list_id = #{bookListId}
+    </select>
+
+    <insert id="insertProfessionalDictData" parameterType="ProfessionalDictData" useGeneratedKeys="true" keyProperty="id">
+        insert into professional_dict_data
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="parentId != null  ">parent_id,</if>
+			<if test="bookListId != null ">book_list_id,</if>
+			<if test="channel != null  and channel != ''  ">channel,</if>
+			<if test="professional != null  and professional != ''  ">professional,</if>
+			<if test="platform != null  and platform != ''  ">platform,</if>
+			<if test="application != null  and application != ''  ">application,</if>
+			<if test="packageName != null  and packageName != ''  ">package_name,</if>
+			<if test="version != null  and version != ''  ">version,</if>
+			<if test="channelStatus != null  ">channel_status,</if>
+			<if test="remark != null  and remark != ''  ">remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="parentId != null  ">#{parentId},</if>
+			<if test="bookListId != null ">#{bookListId},</if>
+			<if test="channel != null  and channel != ''  ">#{channel},</if>
+			<if test="professional != null  and professional != ''  ">#{professional},</if>
+			<if test="platform != null  and platform != ''  ">#{platform},</if>
+			<if test="application != null  and application != ''  ">#{application},</if>
+			<if test="packageName != null  and packageName != ''  ">#{packageName},</if>
+			<if test="version != null  and version != ''  ">#{version},</if>
+			<if test="channelStatus != null  ">#{channelStatus},</if>
+			<if test="remark != null  and remark != ''  ">#{remark},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateProfessionalDictData" parameterType="ProfessionalDictData">
+        update professional_dict_data
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="parentId != null  ">parent_id = #{parentId},</if>
+            <if test="bookListId != null ">book_list_id = #{bookListId},</if>
+            <if test="channel != null">channel = #{channel},</if>
+            <if test="professional != null">professional = #{professional},</if>
+            <if test="platform != null">platform = #{platform},</if>
+            <if test="application != null">application = #{application},</if>
+            <if test="packageName != null">package_name = #{packageName},</if>
+            <if test="version != null">version = #{version},</if>
+            <if test="channelStatus != null  ">channel_status = #{channelStatus},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+	<delete id="deleteProfessionalDictDataById" parameterType="Integer">
+        delete from professional_dict_data where id = #{id}
+    </delete>
+	
+    <delete id="deleteProfessionalDictDataByIds" parameterType="String">
+        delete from professional_dict_data where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

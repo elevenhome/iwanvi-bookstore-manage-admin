@@ -1,0 +1,278 @@
+<!DOCTYPE HTML>
+<html  lang="zh" xmlns:th="http://www.thymeleaf.org">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-audioApplicationBook-add">
+			<input type="hidden" id="bookIds" name="bookIds">
+			<input id="bookListId" name="bookListId" type="hidden" th:value="0" />
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">书单编号：</label>
+				<div class="col-sm-8">
+					<div class="input-group">
+						<input class="form-control" type="text" onclick="selectTree()" id="treeName" readonly="true" th:value="顶级书单">
+						<span class="input-group-addon"><i class="fa fa-search"></i></span>
+					</div>
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">图书ID：</label>
+				<div class="col-sm-8">
+					<div class="col-sm-12 search-collapse">
+						<form id="formId">
+							<div class="select-list">
+								<ul>
+									<li>
+										书名：<input type="text" name="bookName"/>
+									</li>
+									<li>
+										图书ID：<input type="text" name="bookId"/>
+									</li>
+									<li>
+										上架状态：<select name="status">
+										<option value="">所有</option>
+										<option value="1">上架</option>
+										<option value="0">下线</option>
+										<option value="-1">已下架</option>
+									</select>
+									</li>
+									<!--<li>
+										更新状态：<select name="bookStatus">
+										<option value="">所有</option>
+										<option value="01">连载</option>
+										<option value="02">暂停</option>
+										<option value="03">完本</option>
+									</select>
+									</li>-->
+									<li class="select-time">
+										<label>创建时间： </label>
+										<input type="text" class="time-input" id="startTime" placeholder="开始时间" name="params[beginTime]"/>
+										<span>-</span>
+										<input type="text" class="time-input" id="endTime" placeholder="结束时间" name="params[endTime]"/>
+									</li>
+									<li>
+										<a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+										<a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+									</li>
+								</ul>
+							</div>
+						</form>
+					</div>
+					<div class="col-sm-12 select-table table-striped">
+						<table id="bootstrap-table" data-mobile-responsive="true"></table>
+					</div>
+				</div>
+			</div>
+			<!--<div class="form-group">	
+				<label class="col-sm-3 control-label">封面：</label>
+				<div class="col-sm-8">
+					<input id="imgUrl" name="imgUrl" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">作者：</label>
+				<div class="col-sm-8">
+					<input id="bookAuthor" name="bookAuthor" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">新书名：</label>
+				<div class="col-sm-8">
+					<input id="newBookName" name="newBookName" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">简介：</label>
+				<div class="col-sm-8">
+					<input id="introduction" name="introduction" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">新价格：</label>
+				<div class="col-sm-8">
+					<input id="newPrice" name="newPrice" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">关键词：</label>
+				<div class="col-sm-8">
+					<input id="keyWord" name="keyWord" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">点击数：</label>
+				<div class="col-sm-8">
+					<input id="clickCount" name="clickCount" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">下载数：</label>
+				<div class="col-sm-8">
+					<input id="downloadCount" name="downloadCount" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">订阅数：</label>
+				<div class="col-sm-8">
+					<input id="subscriptionCount" name="subscriptionCount" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">收藏数：</label>
+				<div class="col-sm-8">
+					<input id="collectionCount" name="collectionCount" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">分享数：</label>
+				<div class="col-sm-8">
+					<input id="shareCount" name="shareCount" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">阅读章节数：</label>
+				<div class="col-sm-8">
+					<input id="readChapterCount" name="readChapterCount" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">状态：1正常，0失效：</label>
+				<div class="col-sm-8">
+					<input id="status" name="status" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">备注：</label>
+				<div class="col-sm-8">
+					<input id="remark" name="remark" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">短简介：</label>
+				<div class="col-sm-8">
+					<input id="shortIntroduction" name="shortIntroduction" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">推荐语：</label>
+				<div class="col-sm-8">
+					<input id="recommended" name="recommended" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">长简介：</label>
+				<div class="col-sm-8">
+					<input id="longIntroduction" name="longIntroduction" class="form-control" type="text">
+				</div>
+			</div>-->
+		</form>
+	</div>
+    <div th:include="include::footer"></div>
+    <script type="text/javascript">
+		var prefix = ctx + "book/audioApplicationBook"
+		$("#form-audioApplicationBook-add").validate({
+			rules:{
+				bookListId:{
+					required:true,
+				},
+				bookIds:{
+					required:true,
+				}
+			},
+			focusCleanup: true
+		});
+		
+		function submitHandler() {
+	        if ($.validate.form()) {
+				var rows = $.common.isEmpty($.table._option.uniqueId) ? $.table.selectFirstColumns() : $.table.selectColumns($.table._option.uniqueId);
+				if (rows.length == 0) {
+					$.modal.alertWarning("请至少选择一条记录");
+					return;
+				}
+				var bookIds = rows.join();
+				$("#bookIds").val(bookIds);
+	            $.operate.save(prefix + "/add", $('#form-audioApplicationBook-add').serialize());
+	        }
+	    }
+
+		$(function() {
+			var options = {
+				url: ctx + "book/audioProfessionalBook/list?status=1",
+				modalName: "图书",
+				showSearch: false, //默认为true显示检索信息，设为false隐藏
+				showRefresh: false, //默认为true显示刷新按钮，设为false隐藏
+				showColumns: false, //默认为true显示某列下拉菜单，设为false隐藏
+				showToggle: false, //默认为true显示视图切换按钮，设为false隐藏
+				columns: [{
+					checkbox: true
+				},
+					/*{
+                        field : 'id',
+                        title : '编号',
+                        visible: false
+                    },*/
+					{
+						field : 'bookId',
+						title : '图书ID',
+						sortable: true
+					},
+					{
+						field : 'newBookName',
+						title : '书名',
+						sortable: true
+					},
+					{
+						field : 'imgUrl',
+						title : '封面',
+						sortable: true,
+						formatter: function(value, item, index) {
+							return '<img width="50" height="80" src="'+item.imgUrl+'"/>';
+						}
+					},
+					{
+						field : 'bookAuthor',
+						title : '作者',
+						sortable: true
+					},
+					{
+						field : 'status',
+						title : '状态',
+						sortable: true,
+						formatter: function(value, item, index) {
+							if (item.status == 1) {
+								return '<span class="label label-success">上架</span>';
+							} else if (item.status == 0) {
+								return '<span class="label label-warning">下线</span>';
+							} else if (item.status == -1) {
+								return '<span class="label label-warning">已下架</span>';
+							}
+						}
+					}]
+			};
+			$.table.init(options);
+		});
+
+		/*-选择树*/
+		function selectTree() {
+			var treeId = $("#treeId").val();
+			var id = treeId > 0 ? treeId : 1;
+			var url = ctx + "book/audioProfessionalDictData/selectTree/" + id;
+			var options = {
+				title: '书单选择',
+				width: "380",
+				url: url,
+				callBack: doSubmit
+			};
+			$.modal.openOptions(options);
+		}
+
+		function doSubmit(index, layero){
+			var body = layer.getChildFrame('body', index);
+			$("#treeName").val(body.find('#treeName').val());
+			$("#bookListId").val(body.find('#bookListId').val());
+			layer.close(index);
+		}
+	</script>
+</body>
+</html>

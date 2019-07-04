@@ -1,0 +1,72 @@
+<!DOCTYPE HTML>
+<html  lang="zh" xmlns:th="http://www.thymeleaf.org">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-audioCategory-edit" th:object="${audioCategory}">
+            <input id="id" name="id" th:field="*{id}"  type="hidden">
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">分类ID：</label>
+				<div class="col-sm-8">
+					<input id="categoryId" name="categoryId" th:field="*{categoryId}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">名称：</label>
+				<div class="col-sm-8">
+					<input id="name" name="name" th:field="*{name}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">父级ID：</label>
+				<div class="col-sm-8">
+					<input id="parentId" name="parentId" th:field="*{parentId}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">级别：</label>
+				<div class="col-sm-8">
+					<input id="level" name="level" th:field="*{level}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">创建日期：</label>
+				<div class="col-sm-8">
+					<input id="createDate" name="createDate" th:field="*{createDate}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">修改日期：</label>
+				<div class="col-sm-8">
+					<input id="updateDate" name="updateDate" th:field="*{updateDate}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">排序：</label>
+				<div class="col-sm-8">
+					<input id="idx" name="idx" th:field="*{idx}" class="form-control" type="text">
+				</div>
+			</div>
+		</form>
+    </div>
+    <div th:include="include::footer"></div>
+    <script type="text/javascript">
+		var prefix = ctx + "book/audioCategory";
+		$("#form-audioCategory-edit").validate({
+			rules:{
+				xxxx:{
+					required:true,
+				},
+			},
+			focusCleanup: true
+		});
+		
+		function submitHandler() {
+	        if ($.validate.form()) {
+	            $.operate.save(prefix + "/edit", $('#form-audioCategory-edit').serialize());
+	        }
+	    }
+	</script>
+</body>
+</html>

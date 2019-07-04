@@ -1,0 +1,145 @@
+<!DOCTYPE HTML>
+<html  lang="zh" xmlns:th="http://www.thymeleaf.org">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-packageBook-edit" th:object="${packageBook}">
+            <input id="id" name="id" th:field="*{id}"  type="hidden">
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">书单编号：</label>
+				<div class="col-sm-8">
+					<input id="bookListId" name="bookListId" th:field="*{bookListId}" class="form-control" type="text" readonly>
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">图书ID：</label>
+				<div class="col-sm-8">
+					<input id="bookId" name="bookId" th:field="*{bookId}" class="form-control" type="text" readonly>
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">封面：</label>
+				<div class="col-sm-8">
+					<input id="imgUrl" name="imgUrl" th:field="*{imgUrl}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">作者：</label>
+				<div class="col-sm-8">
+					<input id="bookAuthor" name="bookAuthor" th:field="*{bookAuthor}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">书名：</label>
+				<div class="col-sm-8">
+					<input id="newBookName" name="newBookName" th:field="*{newBookName}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">简介：</label>
+				<div class="col-sm-8">
+					<input id="introduction" name="introduction" th:field="*{introduction}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label">短简介：</label>
+				<div class="col-sm-8">
+					<textarea type="text" id="shortIntroduction" name="shortIntroduction" th:field="*{shortIntroduction}" class="form-control"></textarea>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label">推荐语：</label>
+				<div class="col-sm-8">
+					<textarea type="text" id="recommended" name="recommended" th:field="*{recommended}" class="form-control"></textarea>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label">长简介：</label>
+				<div class="col-sm-8">
+					<textarea type="text" id="longIntroduction" name="longIntroduction" th:field="*{longIntroduction}" class="form-control"></textarea>
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">新价格：</label>
+				<div class="col-sm-8">
+					<input id="newPrice" name="newPrice" th:field="*{newPrice}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">关键词：</label>
+				<div class="col-sm-8">
+					<input id="keyWord" name="keyWord" th:field="*{keyWord}" class="form-control" type="text">
+				</div>
+			</div>
+			<!--<div class="form-group">
+				<label class="col-sm-3 control-label">点击数：</label>
+				<div class="col-sm-8">
+					<input id="clickCount" name="clickCount" th:field="*{clickCount}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">下载数：</label>
+				<div class="col-sm-8">
+					<input id="downloadCount" name="downloadCount" th:field="*{downloadCount}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">订阅数：</label>
+				<div class="col-sm-8">
+					<input id="subscriptionCount" name="subscriptionCount" th:field="*{subscriptionCount}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">收藏数：</label>
+				<div class="col-sm-8">
+					<input id="collectionCount" name="collectionCount" th:field="*{collectionCount}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">分享数：</label>
+				<div class="col-sm-8">
+					<input id="shareCount" name="shareCount" th:field="*{shareCount}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">阅读章节数：</label>
+				<div class="col-sm-8">
+					<input id="readChapterCount" name="readChapterCount" th:field="*{readChapterCount}" class="form-control" type="text">
+				</div>
+			</div>-->
+			<div class="form-group">
+				<label class="col-sm-3 control-label">状态：</label>
+				<div class="col-sm-8">
+					<label class="radio-box"> <input type="radio" th:field="*{status}" name="status" value="1" /> 正常 </label>
+					<label class="radio-box"> <input type="radio" th:field="*{status}" name="status" value="0" /> 失效 </label>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label">备注：</label>
+				<div class="col-sm-8">
+					<input id="remark" name="remark" th:field="*{remark}" class="form-control" type="text">
+				</div>
+			</div>
+		</form>
+    </div>
+    <div th:include="include::footer"></div>
+    <script type="text/javascript">
+		var prefix = ctx + "book/packageBook";
+		$("#form-packageBook-edit").validate({
+			rules:{
+				xxxx:{
+					required:true,
+				},
+			},
+			focusCleanup: true
+		});
+		
+		function submitHandler() {
+	        if ($.validate.form()) {
+	            $.operate.save(prefix + "/edit", $('#form-packageBook-edit').serialize());
+	        }
+	    }
+	</script>
+</body>
+</html>

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+	<property name="log.path" value="/home/iwanvi-bookstore-book-admin/logs" />
+	<property name="log.pattern" value="%d{HH:mm:ss.SSS} [%thread] %-5level %logger{20} - [%method,%line] - %msg%n" />
+
+	<!-- 控制台输出 -->
+	<appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<pattern>${log.pattern}</pattern>
+		</encoder>
+	</appender>
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <!--格式化输出：%d表示日期，%thread表示线程名，%-5level：级别从左显示5个字符宽度%msg：日志消息，%n是换行符 ：
+            |%blue(%thread)  线程 如 ：DiscoveryClient-CacheRefreshExecutor-0-->
+            <pattern>%yellow(%date{yyyy-MM-dd HH:mm:ss}) |%highlight(%-5level)  |%green(%logger:%line) |%black(%msg%n)</pattern>
+        </encoder>
+    </appender>
+	
+	<!-- 系统日志输出 -->
+	<appender name="file_info" class="ch.qos.logback.core.rolling.RollingFileAppender">
+	    <file>${log.path}/iwanvi-bookstore-book-admin-sys-info.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<!-- 按天回滚 daily -->
+			<fileNamePattern>${log.path}/iwanvi-bookstore-book-admin-sys-info.%d{yyyy-MM-dd}.log</fileNamePattern>
+			<!-- 日志最大的历史 60天 -->
+			<maxHistory>60</maxHistory>
+		</rollingPolicy>
+		<encoder>
+			<pattern>${log.pattern}</pattern>
+		</encoder>
+		<filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>INFO</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+	</appender>
+	
+	<appender name="file_error" class="ch.qos.logback.core.rolling.RollingFileAppender">
+	    <file>${log.path}/iwanvi-bookstore-book-admin-sys-error.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${log.path}/iwanvi-bookstore-book-admin-sys-error.%d{yyyy-MM-dd}.log</fileNamePattern>
+			<!-- 日志最大的历史 60天 -->
+			<maxHistory>60</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${log.pattern}</pattern>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>ERROR</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+    </appender>
+	
+	<!-- 用户访问日志输出  -->
+    <appender name="sys-user" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${log.path}/iwanvi-bookstore-book-admin-sys-user.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- 按天回滚 daily -->
+            <fileNamePattern>${log.path}/iwanvi-bookstore-book-admin-sys-user.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <!-- 日志最大的历史 60天 -->
+            <maxHistory>60</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${log.pattern}</pattern>
+        </encoder>
+    </appender>
+
+	<!-- 显示形成的sql、使用的参数、结果集 -->
+	<!--
+		<logger name="java.sql" level="debug" />
+		<logger name="org.springframework.jdbc" level="debug" />
+	-->
+	<logger name="com.iwanvi" level="info" />
+	<root level="info">
+		<appender-ref ref="console" />
+        <!--<appender-ref ref="STDOUT" />-->
+	</root>
+	<!--系统操作日志-->
+    <root level="info">
+        <appender-ref ref="file_info" />
+        <appender-ref ref="file_error" />
+    </root>
+	<!--系统用户操作日志-->
+    <logger name="sys-user" level="info">
+        <appender-ref ref="sys-user"/>
+    </logger>
+</configuration> 

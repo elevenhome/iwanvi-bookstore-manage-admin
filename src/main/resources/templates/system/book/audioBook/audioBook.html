@@ -1,0 +1,339 @@
+<!DOCTYPE HTML>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+    
+     <div class="container-div">
+		<div class="row">
+			<div class="col-sm-12 search-collapse">
+				<form id="formId">
+					<div class="select-list">
+						<ul>
+							<li>
+								音频图书ID：<input type="text" name="bookIds"/>
+							</li>
+							<li>
+								音频标题：<input type="text" name="title"/>
+							</li>
+							<li>
+								作者名称：<input type="text" name="authorName"/>
+							</li>
+							<li>
+								演讲者名称：<input type="text" name="lecturer"/>
+							</li>
+							<li>
+								图书状态：<select name="status">
+								<option value="">所有</option>
+								<option value="1">上线</option>
+								<option value="0">待审核</option>
+								<option value="-1">未上线</option>
+							</select>
+							</li>
+							<li>
+								更新状态：<select name="audioStatus">
+								<option value="">所有</option>
+								<option value="1">连载</option>
+								<option value="2">暂停</option>
+								<option value="3">完本</option>
+							</select>
+							</li>
+							<li class="select-time">
+								<label>创建时间： </label>
+								<input type="text" class="time-input" id="startTime" placeholder="开始时间" name="params[beginTime]"/>
+								<span>-</span>
+								<input type="text" class="time-input" id="endTime" placeholder="结束时间" name="params[endTime]"/>
+							</li>
+							<!--
+							<li>
+								封面/正封面图片地址：<input type="text" name="imgUrl"/>
+							</li>
+							<li>
+								长封面图片地址：<input type="text" name="longImgUrl"/>
+							</li>
+							<li>
+								图书简介：<input type="text" name="introduction"/>
+							</li>
+							<li>
+								短简介：<input type="text" name="shortIntroduction"/>
+							</li>
+							<li>
+								音频总时长：<input type="text" name="audioTime"/>
+							</li>
+							<li>
+								分类：<input type="text" name="categoryId"/>
+							</li>
+							<li>
+								摘要（用于唯一标识书籍）：<input type="text" name="digest"/>
+							</li>
+							<li>
+								演讲者简介/主播简介：<input type="text" name="lecturerIntroduction"/>
+							</li>
+							<li>
+								音频图书关键字，图书标签：<input type="text" name="keyword"/>
+							</li>
+							<li>
+								出版时间：<input type="text" name="publishTime"/>
+							</li>
+							<li>
+								音频创作时间：<input type="text" name="createDate"/>
+							</li>
+							<li>
+								音频修改时间：<input type="text" name="updateDate"/>
+							</li>
+							<li>
+								最后一章ID：<input type="text" name="lastUpdateChapterId"/>
+							</li>
+							<li>
+								最后一章名称：<input type="text" name="lastUpdateChapterDate"/>
+							</li>
+							<li>
+								最后一章更新时间：<input type="text" name="lastUpdateChapterName"/>
+							</li>
+							<li>
+								系统入库时间：<input type="text" name="sysCreateDate"/>
+							</li>
+							<li>
+								系统修改时间：<input type="text" name="sysUpdateDate"/>
+							</li>
+							<li>
+								cpId：<input type="text" name="cpId"/>
+							</li>
+							<li>
+								cp名称：<input type="text" name="cpName"/>
+							</li>-->
+							<li>
+								<a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+								<a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+							</li>
+						</ul>
+					</div>
+				</form>
+			</div>
+			
+	        <div class="btn-group-sm" id="toolbar" role="group">
+				<a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="book:audioBook:add">
+					<i class="fa fa-plus"></i> 添加
+				</a>
+				<a class="btn btn-primary btn-edit disabled" onclick="$.operate.edit()" shiro:hasPermission="book:audioBook:edit">
+					<i class="fa fa-edit"></i> 修改
+				</a>
+				<a class="btn btn-danger btn-del btn-del disabled" onclick="$.operate.removeAll()" shiro:hasPermission="book:audioBook:remove">
+					<i class="fa fa-remove"></i> 删除
+				</a>
+				<a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="book:audioBook:export">
+						<i class="fa fa-download"></i> 导出
+				 </a>
+			</div>
+			<div class="col-sm-12 select-table table-striped">
+				<table id="bootstrap-table" data-mobile-responsive="true"></table>
+			</div>
+		</div>
+	</div>
+    <div th:include="include :: footer"></div>
+    <script th:inline="javascript">
+        var editFlag = [[${@permission.hasPermi('book:audioBook:edit')}]];
+        var removeFlag = [[${@permission.hasPermi('book:audioBook:remove')}]];
+        var prefix = ctx + "book/audioBook";
+
+        $(function() {
+            var options = {
+                url: prefix + "/list",
+                createUrl: prefix + "/add",
+                updateUrl: prefix + "/edit/{id}",
+                removeUrl: prefix + "/remove",
+				exportUrl: prefix + "/export",
+                modalName: "图书音频",
+		        showExport: false,
+                columns: [{
+		            checkbox: true
+		        },
+				{
+					field : 'id', 
+					title : 'ID',
+					visible: false
+				},
+				{
+					field : 'bookId', 
+					title : '音频图书ID',
+					sortable: true
+				},
+				{
+					field : 'title', 
+					title : '音频标题',
+					sortable: true
+				},
+				{
+					field : 'imgUrl', 
+					title : '封面/正封面图片地址',
+					sortable: true,
+					formatter: function(value, item, index) {
+						if (null == item.imgUrl){
+							return '<span>无</span>';
+						} else {
+							return '<img width="50" height="80" src="'+item.imgUrl+'"/>';
+						}
+					}
+				},
+				{
+					field : 'longImgUrl', 
+					title : '长封面图片地址',
+					sortable: true,
+					formatter: function(value, item, index) {
+						if (null == item.longImgUrl){
+							return '<span>无</span>';
+						} else {
+							return '<img width="50" height="80" src="'+item.longImgUrl+'"/>';
+						}
+					}
+				},
+				{
+					field : 'introduction', 
+					title : '图书简介',
+					sortable: false,
+					visible: false
+				},
+				{
+					field : 'shortIntroduction', 
+					title : '短简介',
+					sortable: false,
+					visible: false
+				},
+				{
+					field : 'audioTime', 
+					title : '音频总时长',
+					sortable: true
+				},
+				{
+					field : 'authorName', 
+					title : '作者名称',
+					sortable: true
+				},
+				{
+					field : 'status', 
+					title : '图书状态',
+					sortable: true,
+					formatter: function(value, item, index) {
+						if (item.status == 1) {
+							return '<span class="label label-success">上线</span>';
+						} else if (item.status == 0) {
+							return '<span class="label label-warning">待审核</span>';
+						} else if (item.status == -1) {
+							return '<span class="label label-warning">未上线</span>';
+						}
+					}
+				},
+				{
+					field : 'audioStatus', 
+					title : '更新状态',
+					sortable: true,
+					formatter: function(value, item, index) {
+						if (item.audioStatus == '1') {
+							return '<span class="label label-success">连载</span>';
+						} else if (item.audioStatus == '2') {
+							return '<span class="label label-warning">暂停</span>';
+						} else if (item.audioStatus == '3') {
+							return '<span class="label label-warning">完本</span>';
+						}
+					}
+				},
+				/*{
+					field : 'categoryId', 
+					title : '分类',
+					sortable: true
+				},
+				{
+					field : 'digest', 
+					title : '摘要（用于唯一标识书籍）',
+					sortable: false,
+					visible: false
+				},*/
+				{
+					field : 'lecturer', 
+					title : '演讲者名称',
+					sortable: true
+				},
+				{
+					field : 'lecturerIntroduction', 
+					title : '演讲者简介/主播简介',
+					sortable: false,
+					visible: false
+				},
+				{
+					field : 'keyword', 
+					title : '音频图书关键字，图书标签',
+					sortable: false,
+					visible: false
+				},
+				{
+					field : 'publishTime', 
+					title : '出版时间',
+					sortable: false,
+					visible: false
+				},
+				{
+					field : 'createDate', 
+					title : '音频创作时间',
+					sortable: false,
+					visible: false
+				},
+				{
+					field : 'updateDate', 
+					title : '音频修改时间',
+					sortable: true,
+					visible: false
+				},
+				{
+					field : 'lastUpdateChapterId', 
+					title : '最后一章ID',
+					sortable: true
+				},
+				{
+					field : 'lastUpdateChapterName', 
+					title : '最后一章名称',
+					sortable: true
+				},
+				{
+					field : 'lastUpdateChapterDate', 
+					title : '最后一章更新时间',
+					sortable: true
+				},
+				{
+					field : 'sysCreateDate', 
+					title : '系统入库时间',
+					sortable: true,
+					visible: false
+				},
+				{
+					field : 'sysUpdateDate', 
+					title : '系统修改时间',
+					sortable: true
+				},
+				/*{
+					field : 'cpId', 
+					title : 'cpId',
+					sortable: false,
+					visible: false
+				},
+				{
+					field : 'cpName', 
+					title : 'cp名称',
+					sortable: false,
+					visible: false
+				},*/
+		        {
+		            title: '操作',
+		            align: 'center',
+		            formatter: function(value, row, index) {
+		            	var actions = [];
+		            	actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="#" onclick="$.operate.edit(\'' + row.id + '\')"><i class="fa fa-edit"></i>编辑</a> ');
+                        actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="#" onclick="$.operate.remove(\'' + row.id + '\')"><i class="fa fa-remove"></i>删除</a>');
+						return actions.join('');
+		            }
+		        }]
+            };
+            $.table.init(options);
+        });
+    </script>
+</body>
+</html>

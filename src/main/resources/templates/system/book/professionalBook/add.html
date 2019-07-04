@@ -1,0 +1,171 @@
+<!DOCTYPE HTML>
+<html  lang="zh" xmlns:th="http://www.thymeleaf.org">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="white-bg">
+	<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-professionalBook-add">
+			<input id="bookListIds" name="bookListIds" type="hidden" th:value="0" />
+			<input type="hidden" id="bookIds" name="bookIds">
+			<div class="form-group">
+				<label class="col-sm-3 control-label">书单编号：</label>
+				<div class="col-sm-8">
+					<div class="input-group">
+						<input class="form-control" type="text" onclick="selectTree()" id="treeName" readonly="true" th:value="顶级书单">
+						<span class="input-group-addon"><i class="fa fa-search"></i></span>
+					</div>
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">图书ID：</label>
+				<div class="col-sm-8">
+					<div class="col-sm-12 search-collapse">
+						<form id="formId">
+							<div class="select-list">
+								<ul>
+									<li>
+										书名：<input type="text" name="bookName"/>
+									</li>
+									<li>
+										图书ID：<input type="text" name="bookIds"/>允许多本(英文,逗号分隔)
+									</li>
+									<li class="select-time">
+										<label>创建时间： </label>
+										<input type="text" class="time-input" id="startTime" placeholder="开始时间" name="params[beginTime]"/>
+										<span>-</span>
+										<input type="text" class="time-input" id="endTime" placeholder="结束时间" name="params[endTime]"/>
+									</li>
+									<li>
+										<a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+										<a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+									</li>
+								</ul>
+							</div>
+						</form>
+					</div>
+					<div class="col-sm-12 select-table table-striped">
+						<table id="bootstrap-table" data-mobile-responsive="true"></table>
+					</div>
+				</div>
+			</div>
+		</form>
+	</div>
+    <div th:include="include::footer"></div>
+	<script th:src="@{/ajax/libs/jquery-ztree/3.5/js/jquery.ztree.all-3.5.js}"></script>
+    <script type="text/javascript">
+		var prefix = ctx + "book/professionalBook"
+		$("#form-professionalBook-add").validate({
+			rules:{
+				bookListIds:{
+					required:true,
+				}
+			},
+			focusCleanup: true
+		});
+		
+		function submitHandler() {
+			if ($.validate.form()) {
+				var rows = $.common.isEmpty($.table._option.uniqueId) ? $.table.selectFirstColumns() : $.table.selectColumns($.table._option.uniqueId);
+				if (rows.length == 0) {
+					$.modal.alertWarning("请至少选择一本书");
+					return;
+				}
+				// var data = { "ids": rows.join() };
+				var bookIds = rows.join();
+				$("#bookIds").val(bookIds);
+				$.operate.save(prefix + "/add", $('#form-professionalBook-add').serialize());
+			}
+	    }
+
+		$(function() {
+			var options = {
+				url: ctx + "book/bookCenter/list?status=1",
+				modalName: "图书",
+				showSearch: false, //默认为true显示检索信息，设为false隐藏
+				showRefresh: false, //默认为true显示刷新按钮，设为false隐藏
+				showColumns: false, //默认为true显示某列下拉菜单，设为false隐藏
+				showToggle: false, //默认为true显示视图切换按钮，设为false隐藏
+				columns: [{
+					checkbox: true
+				},
+					/*{
+						field : 'id',
+						title : '编号',
+						visible: false
+					},*/
+					{
+						field : 'bookId',
+						title : '图书ID',
+						sortable: true
+					},
+					{
+						field : 'bookName',
+						title : '书名',
+						sortable: true
+					},
+					{
+						field : 'imgUrl',
+						title : '封面',
+						sortable: true,
+						formatter: function(value, item, index) {
+							return '<img width="50" height="80" src="'+item.imgUrl+'"/>';
+						}
+					},
+					{
+						field : 'bookAuthor',
+						title : '作者',
+						sortable: true
+					},
+					{
+						field : 'status',
+						title : '状态',
+						sortable: true,
+						formatter: function(value, item, index) {
+							if (item.status == 1) {
+								return '<span class="label label-success">上架</span>';
+							} else if (item.status == 0) {
+								return '<span class="label label-warning">下线</span>';
+							} else if (item.status == -1) {
+								return '<span class="label label-warning">已下架</span>';
+							}
+						}
+					}]
+			};
+			$.table.init(options);
+		});
+
+		/*-选择树*/
+		function selectTree() {
+			var treeId = $("#treeId").val();
+			var id = treeId > 0 ? treeId : 1;
+			var url = ctx + "book/professionalDictData/selectTreeMore/" + id;
+			// var url = ctx + "book/professionalDictData/selectTree/" + id;
+			var options = {
+				title: '书单选择',
+				width: "380",
+				url: url,
+				callBack: doSubmit
+			};
+			$.modal.openOptions(options);
+		}
+
+		function doSubmit(index, layero){
+			var body = layer.getChildFrame('body', index);
+			// $("#treeId").val(body.find('#treeId').val());
+			var treeName = body.find('#treeName').val();
+			var bookListId = body.find('#bookListId').val();
+			$("#treeName").val(subValue(treeName));
+			$("#bookListIds").val(subValue(treeName));
+			// $("#bookListIds").val(subValue(bookListId));
+			layer.close(index);
+		}
+
+		//去掉最后一个逗号(如果不需要去掉，就不用写)
+		function subValue(treeNames) {
+			if (treeNames.length > 0) {
+				return treeNames.substr(0,treeNames.length - 1);
+			}
+		}
+	</script>
+</body>
+</html>

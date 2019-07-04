@@ -1,0 +1,37 @@
+package com.iwanvi.bookstore.admin.service;
+
+import com.iwanvi.bookstore.admin.domain.gen.TableInfo;
+
+import java.util.List;
+
+/**
+ * @Author YDF
+ * @Description 代码生成 服务层
+ * @Date 2019/3/13 0013 14:53
+ * @Version 1.0
+ **/
+public interface IGenService {
+	/**
+	 * 查询ry数据库表信息
+	 *
+	 * @param tableInfo 表信息
+	 * @return 数据库表列表
+	 */
+	public List<TableInfo> selectTableList(TableInfo tableInfo);
+	
+	/**
+	 * 生成代码
+	 *
+	 * @param tableName 表名称
+	 * @return 数据
+	 */
+	public byte[] generatorCode(String tableName);
+	
+	/**
+	 * 批量生成代码
+	 *
+	 * @param tableNames 表数组
+	 * @return 数据
+	 */
+	public byte[] generatorCode(String[] tableNames);
+}

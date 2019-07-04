@@ -1,0 +1,180 @@
+<!DOCTYPE HTML>
+<html  lang="zh" xmlns:th="http://www.thymeleaf.org">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-audioBook-edit" th:object="${audioBook}">
+            <input id="id" name="id" th:field="*{id}"  type="hidden">
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">音频图书ID：</label>
+				<div class="col-sm-8">
+					<input id="bookId" name="bookId" th:field="*{bookId}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">音频标题：</label>
+				<div class="col-sm-8">
+					<input id="title" name="title" th:field="*{title}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">封面/正封面图片地址：</label>
+				<div class="col-sm-8">
+					<input id="imgUrl" name="imgUrl" th:field="*{imgUrl}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">长封面图片地址：</label>
+				<div class="col-sm-8">
+					<input id="longImgUrl" name="longImgUrl" th:field="*{longImgUrl}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">图书简介：</label>
+				<div class="col-sm-8">
+					<input id="introduction" name="introduction" th:field="*{introduction}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">短简介：</label>
+				<div class="col-sm-8">
+					<input id="shortIntroduction" name="shortIntroduction" th:field="*{shortIntroduction}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">音频总时长：</label>
+				<div class="col-sm-8">
+					<input id="audioTime" name="audioTime" th:field="*{audioTime}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">作者名称：</label>
+				<div class="col-sm-8">
+					<input id="authorName" name="authorName" th:field="*{authorName}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">图书状态，小于0 未上线  大于0上线 0 待审核状态：</label>
+				<div class="col-sm-8">
+					<input id="status" name="status" th:field="*{status}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">1 连载 2 暂停更新 3 完本：</label>
+				<div class="col-sm-8">
+					<input id="audioStatus" name="audioStatus" th:field="*{audioStatus}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">分类：</label>
+				<div class="col-sm-8">
+					<input id="categoryId" name="categoryId" th:field="*{categoryId}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">摘要（用于唯一标识书籍）：</label>
+				<div class="col-sm-8">
+					<input id="digest" name="digest" th:field="*{digest}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">演讲者名称：</label>
+				<div class="col-sm-8">
+					<input id="lecturer" name="lecturer" th:field="*{lecturer}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">演讲者简介/主播简介：</label>
+				<div class="col-sm-8">
+					<input id="lecturerIntroduction" name="lecturerIntroduction" th:field="*{lecturerIntroduction}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">音频图书关键字，图书标签：</label>
+				<div class="col-sm-8">
+					<input id="keyword" name="keyword" th:field="*{keyword}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">出版时间：</label>
+				<div class="col-sm-8">
+					<input id="publishTime" name="publishTime" th:field="*{publishTime}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">音频创作时间：</label>
+				<div class="col-sm-8">
+					<input id="createDate" name="createDate" th:field="*{createDate}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">音频修改时间：</label>
+				<div class="col-sm-8">
+					<input id="updateDate" name="updateDate" th:field="*{updateDate}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">最后一章ID：</label>
+				<div class="col-sm-8">
+					<input id="lastUpdateChapterId" name="lastUpdateChapterId" th:field="*{lastUpdateChapterId}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">最后一章名称：</label>
+				<div class="col-sm-8">
+					<input id="lastUpdateChapterDate" name="lastUpdateChapterDate" th:field="*{lastUpdateChapterDate}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">最后一章更新时间：</label>
+				<div class="col-sm-8">
+					<input id="lastUpdateChapterName" name="lastUpdateChapterName" th:field="*{lastUpdateChapterName}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">系统入库时间：</label>
+				<div class="col-sm-8">
+					<input id="sysCreateDate" name="sysCreateDate" th:field="*{sysCreateDate}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">系统修改时间：</label>
+				<div class="col-sm-8">
+					<input id="sysUpdateDate" name="sysUpdateDate" th:field="*{sysUpdateDate}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">cpId：</label>
+				<div class="col-sm-8">
+					<input id="cpId" name="cpId" th:field="*{cpId}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">cp名称：</label>
+				<div class="col-sm-8">
+					<input id="cpName" name="cpName" th:field="*{cpName}" class="form-control" type="text">
+				</div>
+			</div>
+		</form>
+    </div>
+    <div th:include="include::footer"></div>
+    <script type="text/javascript">
+		var prefix = ctx + "book/audioBook";
+		$("#form-audioBook-edit").validate({
+			rules:{
+				xxxx:{
+					required:true,
+				},
+			},
+			focusCleanup: true
+		});
+		
+		function submitHandler() {
+	        if ($.validate.form()) {
+	            $.operate.save(prefix + "/edit", $('#form-audioBook-edit').serialize());
+	        }
+	    }
+	</script>
+</body>
+</html>

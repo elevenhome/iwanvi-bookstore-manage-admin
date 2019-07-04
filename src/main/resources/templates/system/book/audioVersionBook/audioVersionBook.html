@@ -1,0 +1,231 @@
+<!DOCTYPE HTML>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+    
+     <div class="container-div">
+		<div class="row">
+			<div class="col-sm-12 search-collapse">
+				<form id="formId">
+					<div class="select-list">
+						<ul>
+							<li>
+								书单编号：<input type="text" name="bookListId"/>
+							</li>
+							<li>
+								图书ID：<input type="text" name="bookId"/>
+							</li>
+							<li>
+								封面：<input type="text" name="imgUrl"/>
+							</li>
+							<li>
+								作者：<input type="text" name="bookAuthor"/>
+							</li>
+							<li>
+								新书名：<input type="text" name="newBookName"/>
+							</li>
+							<li>
+								简介：<input type="text" name="introduction"/>
+							</li>
+							<li>
+								新价格：<input type="text" name="newPrice"/>
+							</li>
+							<li>
+								关键词：<input type="text" name="keyWord"/>
+							</li>
+							<li>
+								点击数：<input type="text" name="clickCount"/>
+							</li>
+							<li>
+								下载数：<input type="text" name="downloadCount"/>
+							</li>
+							<li>
+								订阅数：<input type="text" name="subscriptionCount"/>
+							</li>
+							<li>
+								收藏数：<input type="text" name="collectionCount"/>
+							</li>
+							<li>
+								分享数：<input type="text" name="shareCount"/>
+							</li>
+							<li>
+								阅读章节数：<input type="text" name="readChapterCount"/>
+							</li>
+							<li>
+								状态：1正常，0失效：<input type="text" name="status"/>
+							</li>
+							<li>
+								备注：<input type="text" name="remark"/>
+							</li>
+							<li>
+								短简介：<input type="text" name="shortIntroduction"/>
+							</li>
+							<li>
+								推荐语：<input type="text" name="recommended"/>
+							</li>
+							<li>
+								长简介：<input type="text" name="longIntroduction"/>
+							</li>
+							<li>
+								<a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+								<a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+							</li>
+						</ul>
+					</div>
+				</form>
+			</div>
+			
+	        <div class="btn-group-sm" id="toolbar" role="group">
+				<a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="book:audioVersionBook:add">
+					<i class="fa fa-plus"></i> 添加
+				</a>
+				<a class="btn btn-primary btn-edit disabled" onclick="$.operate.edit()" shiro:hasPermission="book:audioVersionBook:edit">
+					<i class="fa fa-edit"></i> 修改
+				</a>
+				<a class="btn btn-danger btn-del btn-del disabled" onclick="$.operate.removeAll()" shiro:hasPermission="book:audioVersionBook:remove">
+					<i class="fa fa-remove"></i> 删除
+				</a>
+				<a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="book:audioVersionBook:export">
+						<i class="fa fa-download"></i> 导出
+				 </a>
+			</div>
+			<div class="col-sm-12 select-table table-striped">
+				<table id="bootstrap-table" data-mobile-responsive="true"></table>
+			</div>
+		</div>
+	</div>
+    <div th:include="include :: footer"></div>
+    <script th:inline="javascript">
+        var editFlag = [[${@permission.hasPermi('book:audioVersionBook:edit')}]];
+        var removeFlag = [[${@permission.hasPermi('book:audioVersionBook:remove')}]];
+        var prefix = ctx + "book/audioVersionBook";
+
+        $(function() {
+            var options = {
+                url: prefix + "/list",
+                createUrl: prefix + "/add",
+                updateUrl: prefix + "/edit/{id}",
+                removeUrl: prefix + "/remove",
+				exportUrl: prefix + "/export",
+                modalName: "有声版本书单",
+		        showExport: false,
+                columns: [{
+		            checkbox: true
+		        },
+				{
+					field : 'id', 
+					title : '编号',
+					visible: false
+				},
+				{
+					field : 'bookListId', 
+					title : '书单编号',
+					sortable: true
+				},
+				{
+					field : 'bookId', 
+					title : '图书ID',
+					sortable: true
+				},
+				{
+					field : 'imgUrl', 
+					title : '封面',
+					sortable: true
+				},
+				{
+					field : 'bookAuthor', 
+					title : '作者',
+					sortable: true
+				},
+				{
+					field : 'newBookName', 
+					title : '新书名',
+					sortable: true
+				},
+				{
+					field : 'introduction', 
+					title : '简介',
+					sortable: true
+				},
+				{
+					field : 'newPrice', 
+					title : '新价格',
+					sortable: true
+				},
+				{
+					field : 'keyWord', 
+					title : '关键词',
+					sortable: true
+				},
+				{
+					field : 'clickCount', 
+					title : '点击数',
+					sortable: true
+				},
+				{
+					field : 'downloadCount', 
+					title : '下载数',
+					sortable: true
+				},
+				{
+					field : 'subscriptionCount', 
+					title : '订阅数',
+					sortable: true
+				},
+				{
+					field : 'collectionCount', 
+					title : '收藏数',
+					sortable: true
+				},
+				{
+					field : 'shareCount', 
+					title : '分享数',
+					sortable: true
+				},
+				{
+					field : 'readChapterCount', 
+					title : '阅读章节数',
+					sortable: true
+				},
+				{
+					field : 'status', 
+					title : '状态：1正常，0失效',
+					sortable: true
+				},
+				{
+					field : 'remark', 
+					title : '备注',
+					sortable: true
+				},
+				{
+					field : 'shortIntroduction', 
+					title : '短简介',
+					sortable: true
+				},
+				{
+					field : 'recommended', 
+					title : '推荐语',
+					sortable: true
+				},
+				{
+					field : 'longIntroduction', 
+					title : '长简介',
+					sortable: true
+				},
+		        {
+		            title: '操作',
+		            align: 'center',
+		            formatter: function(value, row, index) {
+		            	var actions = [];
+		            	actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="#" onclick="$.operate.edit(\'' + row.id + '\')"><i class="fa fa-edit"></i>编辑</a> ');
+                        actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="#" onclick="$.operate.remove(\'' + row.id + '\')"><i class="fa fa-remove"></i>删除</a>');
+						return actions.join('');
+		            }
+		        }]
+            };
+            $.table.init(options);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,136 @@
+<!DOCTYPE HTML>
+<html  lang="zh" xmlns:th="http://www.thymeleaf.org">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-professionalDictData-edit">
+            <input id="id" name="id" th:field="*{professionalDictData.id}"  type="hidden">
+			<input id="treeId" name="parentId" type="hidden" th:value="${parentId}" />
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">上级编号：</label>
+				<div class="col-sm-8">
+					<div class="input-group">
+						<input class="form-control" type="text" onclick="selectTree()" id="treeName" readonly="true" th:value="${data.bookListId == 1}?'顶级书单':${data.bookListId}">
+						<span class="input-group-addon"><i class="fa fa-search"></i></span>
+					</div>
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">书单编号：</label>
+				<div class="col-sm-8">
+					<input id="bookListId" name="bookListId" th:field="*{professionalDictData.bookListId}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label">业务名：</label>
+				<div class="col-sm-8">
+					<select name="professional" class="form-control m-b" >
+						<option value="" th:selected="*{professionalDictData.professional == ''}">请选择</option>
+						<option th:each="bookDict:${session.bookDictList}" th:if="${bookDict.dictType == '1'}" th:selected="*{professionalDictData.professional} eq ${bookDict.id}" th:value="${bookDict.id}" th:text="${bookDict.cnName}"></option>
+					</select>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label">应用名：</label>
+				<div class="col-sm-8">
+					<select name="application" class="form-control m-b" >
+						<option value="" th:selected="*{professionalDictData.application == ''}">请选择</option>
+						<option th:each="bookDict:${session.bookDictList}" th:if="${bookDict.dictType == '2'}" th:selected="*{professionalDictData.application} eq ${bookDict.id}" th:value="${bookDict.id}" th:text="${bookDict.cnName}"></option>
+					</select>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label">平台名：</label>
+				<div class="col-sm-8">
+					<select name="platform" class="form-control m-b" >
+						<option value="" th:selected="*{professionalDictData.platform == ''}">请选择</option>
+						<option th:each="bookDict:${session.bookDictList}" th:if="${bookDict.dictType == '3'}" th:selected="*{professionalDictData.platform} eq ${bookDict.id}" th:value="${bookDict.id}" th:text="${bookDict.cnName}"></option>
+					</select>
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">渠道名：</label>
+				<div class="col-sm-8">
+					<select name="channel" class="form-control m-b" >
+						<option value="" th:selected="*{professionalDictData.channel == ''}">请选择</option>
+						<option th:each="bookDict:${session.bookDictList}" th:if="${bookDict.dictType == '4'}" th:selected="*{professionalDictData.channel} eq ${bookDict.id}" th:value="${bookDict.id}" th:text="${bookDict.cnName}"></option>
+					</select>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label">版本：</label>
+				<div class="col-sm-8">
+					<div class="input-group" style="width: 100%">
+						<select name="version" class="form-control m-b" >
+							<option value="" th:selected="*{professionalDictData.version == ''}">请选择</option>
+							<option th:each="bookDict:${session.bookDictList}" th:if="${bookDict.dictType == '5'}" th:selected="*{professionalDictData.version} eq ${bookDict.id}" th:value="${bookDict.id}" th:text="${bookDict.cnName}"></option>
+						</select>
+					</div>
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">包名：</label>
+				<div class="col-sm-8">
+					<select name="packageName" class="form-control m-b" >
+						<option value="" th:selected="*{professionalDictData.packageName == ''}">请选择</option>
+						<option th:each="bookDict:${session.bookDictList}" th:if="${bookDict.dictType == '6'}" th:selected="*{professionalDictData.packageName} eq ${bookDict.id}" th:value="${bookDict.id}" th:text="${bookDict.cnName}"></option>
+					</select>
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">状态：</label>
+				<div class="col-sm-8">
+					<label class="radio-box"> <input type="radio" th:field="*{professionalDictData.channelStatus}" name="channelStatus" value="1" /> 正常 </label>
+					<label class="radio-box"> <input type="radio" th:field="*{professionalDictData.channelStatus}" name="channelStatus" value="0" /> 失效 </label>
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">备注：</label>
+				<div class="col-sm-8">
+					<input id="remark" name="remark" th:field="*{professionalDictData.remark}" class="form-control" type="text">
+				</div>
+			</div>
+		</form>
+    </div>
+    <div th:include="include::footer"></div>
+    <script type="text/javascript">
+		var prefix = ctx + "book/professionalDictData";
+		$("#form-professionalDictData-edit").validate({
+			rules:{
+				xxxx:{
+					required:true,
+				},
+			},
+			focusCleanup: true
+		});
+		
+		function submitHandler() {
+	        if ($.validate.form()) {
+	            $.operate.save(prefix + "/edit", $('#form-professionalDictData-edit').serialize());
+	        }
+	    }
+
+		/*-选择树*/
+		function selectTree() {
+			var treeId = $("#treeId").val();
+			var id = treeId > 0 ? treeId : 1;
+			var url = prefix + "/selectTree/" + id;
+			var options = {
+				title: '书单选择',
+				width: "380",
+				url: url,
+				callBack: doSubmit
+			};
+			$.modal.openOptions(options);
+		}
+
+		function doSubmit(index, layero){
+			var body = layer.getChildFrame('body', index);
+			$("#treeId").val(body.find('#treeId').val());
+			$("#treeName").val(body.find('#treeName').val());
+			layer.close(index);
+		}
+	</script>
+</body>
+</html>

@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.iwanvi.bookstore.admin.dao.ProfessionalBookMapper">
+    <resultMap type="ProfessionalBook" id="ProfessionalBookResult">
+        <result property="id"    column="id"    />
+        <result property="bookListId"    column="book_list_id"    />
+        <result property="bookId"    column="book_id"    />
+        <result property="imgUrl"    column="img_url"    />
+        <result property="bookAuthor"    column="book_author"    />
+        <result property="newBookName"    column="new_book_name"    />
+        <result property="introduction"    column="introduction"    />
+        <result property="newPrice"    column="new_price"    />
+        <result property="keyWord"    column="key_word"    />
+        <result property="clickCount"    column="click_count"    />
+        <result property="downloadCount"    column="download_count"    />
+        <result property="subscriptionCount"    column="subscription_count"    />
+        <result property="collectionCount"    column="collection_count"    />
+        <result property="shareCount"    column="share_count"    />
+        <result property="readChapterCount"    column="read_chapter_count"    />
+        <result property="status"    column="status"    />
+        <result property="remark"    column="remark"    />
+        <result property="shortIntroduction"    column="short_introduction"    />
+        <result property="recommended"    column="recommended"    />
+        <result property="longIntroduction"    column="long_introduction"    />
+        <result property="weekPv"    column="week_pv"    />
+        <result property="hotScore"    column="hot_score"    />
+        <result property="newScore"    column="new_score"    />
+        <association property="book"
+                     resultMap="com.iwanvi.bookstore.admin.dao.BookCenterMapper.BookCenterResult"/>
+        <association property="dictData"
+                     resultMap="com.iwanvi.bookstore.admin.dao.ProfessionalDictDataMapper.ProfessionalDictDataResult"/>
+    </resultMap>
+	
+	<sql id="selectProfessionalBookVo">
+        select id, book_list_id, book_id, img_url, book_author, new_book_name, introduction, new_price, key_word, click_count, download_count,
+        subscription_count, collection_count, share_count, read_chapter_count, status, remark, short_introduction, recommended, long_introduction, hot_score, new_score
+        from professional_book
+    </sql>
+
+    <sql id="selectColumn">
+        bc.id, bc.book_id, bc.book_name,bc.img_url,bc.book_author,bc.introduction,bc.word_count,bc.category_id,bc.category_sec,
+        bc.category_thr,bc.key_word,bc.`status`,bc.book_status,bc.last_update_chapter_date,bc.last_update_chapter_name,
+        bc.last_update_chapter_id,bc.pindao_id,bc.create_date,bc.update_date, bc.short_introduction, bc.recommended, bc.long_introduction
+    </sql>
+
+    <!-- pb.book_list_id, pb.hot_score, pb.new_score,bc.book_id, bc.`status`, -->
+    <select id="selectList" parameterType="ProfessionalBook" resultMap="ProfessionalBookResult">
+        SELECT pb.id, 
+        bg.week_pv,
+        bc.word_count, bc.book_status,bc.last_update_chapter_date,bc.create_date,bc.update_date
+        FROM professional_book pb
+        LEFT JOIN book_center bc ON pb.book_id = bc.book_id
+        LEFT JOIN freezwsc.cxb_book_grade bg ON bg.book_id = pb.book_id
+        <where>  bg.week_pv > 0
+             <if test="bookListId != null"> and pb.book_list_id = #{bookListId}</if>
+             <if test="bookId != null  and bookId != '' "> and pb.book_id = #{bookId}</if>
+         </where>
+    </select>
+    
+    <select id="selectProfessionalBookList" parameterType="ProfessionalBook" resultMap="ProfessionalBookResult">
+        select pb.*, dt.channel,dt.professional,dt.platform,dt.application,dt.package_name,dt.version
+        FROM professional_book pb LEFT JOIN professional_dict_data dt
+        ON pb.book_list_id = dt.book_list_id
+        <where>  
+            <if test="id != null "> and pb.id = #{id}</if>
+             <if test="bookListId != null"> and pb.book_list_id = #{bookListId}</if>
+             <if test="bookId != null  and bookId != '' "> and pb.book_id = #{bookId}</if>
+             <if test="imgUrl != null  and imgUrl != '' "> and pb.img_url = #{imgUrl}</if>
+             <if test="bookAuthor != null  and bookAuthor != '' "> and pb.book_author = #{bookAuthor}</if>
+             <if test="newBookName != null  and newBookName != '' "> and pb.new_book_name = #{newBookName}</if>
+             <if test="introduction != null  and introduction != '' "> and pb.introduction = #{introduction}</if>
+             <if test="newPrice != null "> and pb.new_price = #{newPrice}</if>
+             <if test="keyWord != null  and keyWord != '' "> and pb.key_word = #{keyWord}</if>
+             <if test="clickCount != null "> and pb.click_count = #{clickCount}</if>
+             <if test="downloadCount != null "> and pb.download_count = #{downloadCount}</if>
+             <if test="subscriptionCount != null "> and pb.subscription_count = #{subscriptionCount}</if>
+             <if test="collectionCount != null "> and pb.collection_count = #{collectionCount}</if>
+             <if test="shareCount != null "> and pb.share_count = #{shareCount}</if>
+             <if test="readChapterCount != null "> and pb.read_chapter_count = #{readChapterCount}</if>
+             <if test="status != null "> and pb.status = #{status}</if>
+             <if test="remark != null  and remark != '' "> and pb.remark = #{remark}</if>
+            <if test="shortIntroduction != null  and shortIntroduction != '' "> and pb.short_introduction = #{shortIntroduction}</if>
+            <if test="recommended != null  and recommended != '' "> and pb.recommended = #{recommended}</if>
+            <if test="longIntroduction != null  and longIntroduction != '' "> and pb.long_introduction = #{longIntroduction}</if>
+            <if test="bookIds != null and bookIds !='' "> and pb.book_id in (${bookIds})</if>
+         </where>
+    </select>
+    
+    <select id="selectProfessionalBookById" parameterType="Integer" resultMap="ProfessionalBookResult">
+        <include refid="selectProfessionalBookVo"/>
+        where id = #{id}
+    </select>
+    
+    <select id="selectProfessionalBookByBookId" parameterType="String" resultMap="ProfessionalBookResult">
+        <include refid="selectProfessionalBookVo"/>
+        where book_id = #{bookId}
+    </select>
+        
+    <insert id="insertProfessionalBook" parameterType="ProfessionalBook" useGeneratedKeys="true" keyProperty="id">
+        insert into professional_book
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="bookListId != null ">book_list_id,</if>
+			<if test="bookId != null  and bookId != ''  ">book_id,</if>
+			<if test="imgUrl != null  and imgUrl != ''  ">img_url,</if>
+			<if test="bookAuthor != null  and bookAuthor != ''  ">book_author,</if>
+			<if test="newBookName != null  and newBookName != ''  ">new_book_name,</if>
+			<if test="introduction != null  and introduction != ''  ">introduction,</if>
+			<if test="newPrice != null  ">new_price,</if>
+			<if test="keyWord != null  and keyWord != ''  ">key_word,</if>
+			<if test="clickCount != null  ">click_count,</if>
+			<if test="downloadCount != null  ">download_count,</if>
+			<if test="subscriptionCount != null  ">subscription_count,</if>
+			<if test="collectionCount != null  ">collection_count,</if>
+			<if test="shareCount != null  ">share_count,</if>
+			<if test="readChapterCount != null  ">read_chapter_count,</if>
+			<if test="status != null  ">status,</if>
+			<if test="remark != null  and remark != ''  ">remark,</if>
+            <if test="shortIntroduction != null  and shortIntroduction != ''  ">short_introduction,</if>
+            <if test="recommended != null  and recommended != ''  ">recommended,</if>
+            <if test="longIntroduction != null  and longIntroduction != ''  ">long_introduction,</if>
+            <if test="hotScore != null ">hot_score,</if>
+            <if test="newScore != null ">new_score,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="bookListId != null ">#{bookListId},</if>
+			<if test="bookId != null  and bookId != ''  ">#{bookId},</if>
+			<if test="imgUrl != null  and imgUrl != ''  ">#{imgUrl},</if>
+			<if test="bookAuthor != null  and bookAuthor != ''  ">#{bookAuthor},</if>
+			<if test="newBookName != null  and newBookName != ''  ">#{newBookName},</if>
+			<if test="introduction != null  and introduction != ''  ">#{introduction},</if>
+			<if test="newPrice != null  ">#{newPrice},</if>
+			<if test="keyWord != null  and keyWord != ''  ">#{keyWord},</if>
+			<if test="clickCount != null  ">#{clickCount},</if>
+			<if test="downloadCount != null  ">#{downloadCount},</if>
+			<if test="subscriptionCount != null  ">#{subscriptionCount},</if>
+			<if test="collectionCount != null  ">#{collectionCount},</if>
+			<if test="shareCount != null  ">#{shareCount},</if>
+			<if test="readChapterCount != null  ">#{readChapterCount},</if>
+			<if test="status != null  ">#{status},</if>
+			<if test="remark != null  and remark != ''  ">#{remark},</if>
+            <if test="shortIntroduction != null  and shortIntroduction != ''  ">#{shortIntroduction},</if>
+            <if test="recommended != null  and recommended != ''  ">#{recommended},</if>
+            <if test="longIntroduction != null  and longIntroduction != ''  ">#{longIntroduction},</if>
+            <if test="hotScore != null ">#{hotScore},</if>
+            <if test="newScore != null ">#{newScore},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateProfessionalBook" parameterType="ProfessionalBook">
+        update professional_book
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="bookListId != null ">book_list_id = #{bookListId},</if>
+            <if test="bookId != null  and bookId != ''  ">book_id = #{bookId},</if>
+            <if test="imgUrl != null  and imgUrl != ''  ">img_url = #{imgUrl},</if>
+            <if test="bookAuthor != null  and bookAuthor != ''  ">book_author = #{bookAuthor},</if>
+            <if test="newBookName != null  and newBookName != ''  ">new_book_name = #{newBookName},</if>
+            <if test="introduction != null  and introduction != ''  ">introduction = #{introduction},</if>
+            <if test="newPrice != null  ">new_price = #{newPrice},</if>
+            <if test="keyWord != null  ">key_word = #{keyWord},</if>
+            <if test="clickCount != null  ">click_count = #{clickCount},</if>
+            <if test="downloadCount != null  ">download_count = #{downloadCount},</if>
+            <if test="subscriptionCount != null  ">subscription_count = #{subscriptionCount},</if>
+            <if test="collectionCount != null  ">collection_count = #{collectionCount},</if>
+            <if test="shareCount != null  ">share_count = #{shareCount},</if>
+            <if test="readChapterCount != null  ">read_chapter_count = #{readChapterCount},</if>
+            <if test="status != null  ">status = #{status},</if>
+            <if test="remark != null ">remark = #{remark},</if>
+            <if test="shortIntroduction != null">short_introduction = #{shortIntroduction},</if>
+            <if test="recommended != null">recommended = #{recommended},</if>
+            <if test="longIntroduction != null">long_introduction = #{longIntroduction},</if>
+            <if test="hotScore != null ">hot_score = #{hotScore},</if>
+            <if test="newScore != null ">new_score = #{newScore},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+	<delete id="deleteProfessionalBookById" parameterType="Integer">
+        delete from professional_book where id = #{id}
+    </delete>
+	
+    <delete id="deleteProfessionalBookByIds" parameterType="String">
+        delete from professional_book where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>
