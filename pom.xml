@@ -36,7 +36,7 @@
         <jsoup.version>1.11.3</jsoup.version>
         <poi.version>3.17</poi.version>
         <oshi.version>3.9.1</oshi.version>
-        <httpclient.version>4.5.9</httpclient.version>
+        <httpclient.version>4.5.13</httpclient.version>
     </properties>
 
     <dependencies>
